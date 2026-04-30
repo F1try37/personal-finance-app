@@ -48,4 +48,30 @@ public class Transaction {
     public int getId() {
         return id;
     }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("id:").append(id).append(" сумма: ").append(amount).append(" тип: ").append(transactionType).append(" категория: ").append(category).append(" описание: ").append(description).append(" дата: ").append(dateTime);
+        return sb.toString();
+    }
 }
