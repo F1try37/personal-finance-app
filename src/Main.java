@@ -24,11 +24,12 @@ public class Main {
             int input = Integer.parseInt(scanner.nextLine());
             switch (input) {
                 case 1:
-                    System.out.println("Введите сумму:");
                     BigDecimal amount = null;
                     while (amount == null) {
                         try {
-                            amount = scanner.nextBigDecimal();
+                            System.out.println("Введите сумму:");
+                            String amountInput = scanner.nextLine();
+                            amount = BigDecimal.valueOf(Integer.parseInt(amountInput));
                         } catch (IllegalArgumentException e) {
                             System.out.println("Ошибка ввода, попробуйте ещё раз.");
                         }
@@ -51,9 +52,9 @@ public class Main {
                     }
                     
                     System.out.println("Введите категорию транзакции:");
-                    String categoryInput = scanner.nextLine();
                     Category category = null;
                     while (category == null) {
+                        String categoryInput = scanner.nextLine();
                         try {
                             category = Category.valueOf(categoryInput.toUpperCase());
                         } catch (IllegalArgumentException e) {
@@ -135,6 +136,8 @@ public class Main {
                             System.out.println("Ошибка, попробуйте ещё раз.");
                         }
                     }
+
+                    break;
 
                 case 4:
                     System.out.println("Ваш баланс: " + transactionService.getBalance());
