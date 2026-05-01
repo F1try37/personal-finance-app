@@ -1,4 +1,4 @@
-package Enums;
+package com.example.financeapp.entity;
 
 public enum Category {
     SUPERMARKETS,

@@ -1,7 +1,4 @@
-package Transactions;
-
-import Enums.Category;
-import Enums.TransactionType;
+package com.example.financeapp.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -73,7 +70,7 @@ public class Transaction {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("id:").append(id).append(" сумма: ").append(amount).append(" тип: ").append(transactionType).append(" категория: ").append(category).append(" описание: ").append(description).append(" дата: ").append(dateTime);
+        sb.append("id:").append(id).append(", сумма: ").append(amount).append(", тип: ").append(transactionType).append(", категория: ").append(category).append(", описание: ").append(description).append(", дата: ").append(dateTime);
         return sb.toString();
     }
 }
