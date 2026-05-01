@@ -1,0 +1,18 @@
+package Enums;
+
+public enum Category {
+    SUPERMARKETS,
+    RESTAURANTS,
+    FAST_FOOD,
+    TRANSACTIONS,
+    TRANSPORT,
+    TAXI,
+    BONUSES,
+    SERVICE,
+    PHARMACIES,
+    MEDICINE,
+    TRAIN_TICKETS,
+    PHOTO_AND_COPY_CENTRES,
+    COMMUNICATION,
+    DIGITAL_SERVICES
+}

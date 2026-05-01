@@ -1,18 +1,20 @@
 package Transactions;
 
+import Enums.Category;
 import Enums.TransactionType;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Transaction {
     private int id;
-    private int amount;
+    private BigDecimal amount;
     private TransactionType transactionType;
-    private String category;
+    private Category category;
     private String description;
     private LocalDateTime dateTime;
 
-    public Transaction(int amount, int id, TransactionType transactionType, String category, String description, LocalDateTime dateTime) {
+    public Transaction(BigDecimal amount, int id, TransactionType transactionType, Category category, String description, LocalDateTime dateTime) {
         this.amount = amount;
         this.id = id;
         this.transactionType = transactionType;
@@ -21,7 +23,7 @@ public class Transaction {
         this.dateTime = dateTime;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -29,7 +31,7 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -53,11 +55,11 @@ public class Transaction {
         return transactionType;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 

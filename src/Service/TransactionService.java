@@ -1,28 +1,30 @@
 package Service;
 
+import Enums.Category;
 import Enums.TransactionType;
 import Transactions.Transaction;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionService {
     public List<Transaction> transactions = new ArrayList<>();
-    int balance = 0;
+    BigDecimal balance = BigDecimal.valueOf(0);
 
     public TransactionService() {
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
-    public int getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void addTransaction(int amount, int id, TransactionType transactionType, String category, String description, LocalDateTime dateTime) {
+    public void addTransaction(BigDecimal amount, int id, TransactionType transactionType, Category category, String description, LocalDateTime dateTime) {
         transactions.add(new Transaction(amount,id,transactionType,category,description,dateTime));
     }
 
@@ -61,7 +63,7 @@ public class TransactionService {
     public void filterByCategory(String input) {
         int k = 0;
         for (Transaction transaction: transactions) {
-            if (transaction.getCategory().toLowerCase().equalsIgnoreCase(input)) {
+            if (transaction.getCategory().equals(Category.valueOf(input.toUpperCase()))) {
                 System.out.println(transaction.toString());
                 k++;
             }
