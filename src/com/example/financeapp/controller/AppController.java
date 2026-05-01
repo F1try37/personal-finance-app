@@ -28,19 +28,19 @@ public class AppController {
             int input = Integer.parseInt(scanner.nextLine());
             switch (input) {
                 case 1:
-                    addTransactionCase1();
+                    handleAddTransaction();
                     break;
 
                 case 2:
-                    showTransactionsCase2();
+                    handleShowTransactions();
                     break;
 
                 case 3:
-                    filterByCase3();
+                    handleFilter();
                     break;
 
                 case 4:
-                    showBalanceCase4();
+                    handleShowBalance();
                     break;
 
                 case 0:
@@ -49,13 +49,13 @@ public class AppController {
         }
     }
 
-    private void addTransactionCase1 () {
+    private void handleAddTransaction() {
         BigDecimal amount = null;
         while (amount == null) {
             try {
                 System.out.println("Введите сумму:");
                 String amountInput = scanner.nextLine();
-                amount = BigDecimal.valueOf(Integer.parseInt(amountInput));
+                amount = new BigDecimal(amountInput);
             } catch (IllegalArgumentException e) {
                 System.out.println("Ошибка ввода, попробуйте ещё раз.");
             }
@@ -95,23 +95,23 @@ public class AppController {
         System.out.println("Введите описание транзакции:");
         String description = scanner.nextLine();
 
-        service.addTransaction(amount, service.addId(), transactionType, category, description, service.addDateTime());
+        service.addTransaction(amount, transactionType, category, description);
     }
 
-    private void showTransactionsCase2 () {
+    private void handleShowTransactions() {
         if (service.getTransactions().isEmpty()) {
             System.out.println("У вас ещё не было транзакций.");
         } else {
-            service.getTransactions();
+            System.out.println(service.getTransactions());
         }
     }
 
-    private void filterByCase3 () {
+    private void handleFilter() {
         while (true) {
             System.out.println("Введите фильтр (тип, категория):");
-            String TypeInput = scanner.nextLine().trim();
+            String filterInput = scanner.nextLine().trim();
 
-            if (TypeInput.equalsIgnoreCase("тип")) {
+            if (filterInput.equalsIgnoreCase("тип")) {
 
                 while (true) {
                     System.out.println("Введите тип (доход, расход):");
@@ -130,7 +130,7 @@ public class AppController {
 
                 break;
 
-            } else if (TypeInput.equalsIgnoreCase("категория")) {
+            } else if (filterInput.equalsIgnoreCase("категория")) {
 
                 Category category1 = null;
 
@@ -150,7 +150,7 @@ public class AppController {
                     }
                 }
 
-                service.filterByCategory(category1.name());
+                service.filterByCategory(category1);
                 break;
 
             } else {
@@ -159,7 +159,7 @@ public class AppController {
         }
     }
 
-    private void showBalanceCase4 () {
+    private void handleShowBalance() {
         System.out.println("Ваш баланс: " + service.getBalance());
 
         while (true) {
@@ -172,10 +172,10 @@ public class AppController {
 
                 while (balance == null) {
                     System.out.println("Введите сумму баланса:");
-                    String BalanceInput = scanner.nextLine().trim();
+                    String balanceInput = scanner.nextLine().trim();
 
                     try {
-                        balance = new BigDecimal(BalanceInput);
+                        balance = new BigDecimal(balanceInput);
                     } catch (NumberFormatException e) {
                         System.out.println("Неверный формат числа, попробуйте ещё раз.");
                     }

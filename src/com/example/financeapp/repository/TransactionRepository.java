@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionRepository {
-    public List<Transaction> transactions = new ArrayList<>();
+    private final List<Transaction> transactions = new ArrayList<>();
 
     public List<Transaction> getTransactions() {
         return transactions;

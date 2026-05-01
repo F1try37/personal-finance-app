@@ -68,6 +68,7 @@ public class Transaction {
         return dateTime;
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("id:").append(id).append(", сумма: ").append(amount).append(", тип: ").append(transactionType).append(", категория: ").append(category).append(", описание: ").append(description).append(", дата: ").append(dateTime);
