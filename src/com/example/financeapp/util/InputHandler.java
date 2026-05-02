@@ -60,18 +60,18 @@ public class InputHandler {
             }
         }
 
-        System.out.println("Введите категорию транзакции:");
-        System.out.println("Список доступных категорий:");
-        for (Category c: categoryService.getCategories()) {
-            System.out.println("- " + c);
-        }
         Category category = null;
         while (category == null) {
+            System.out.println("Введите категорию транзакции:");
+            System.out.println("Список доступных категорий:");
+            for (Category c: categoryService.getCategories()) {
+                System.out.println("- " + c);
+            }
             String categoryInput = scanner.nextLine();
-            try {
+            if (categoryService.findByName(categoryInput) != null) {
                 category = categoryService.findByName(categoryInput);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Неверная категория, попробуйте ещё раз.");
+            } else {
+                System.out.println("Категория не найдена.");
             }
         }
 
@@ -165,19 +165,22 @@ public class InputHandler {
                     while (true) {
                         try {
                             System.out.println("Введите id категории:");
-                            String categoryInput = scanner.nextLine();
-                            service.filterByCategoryId(categoryInput);
+                            int categoryInput = Integer.parseInt(scanner.nextLine().trim());
+                            Category category = categoryService.findById(categoryInput);
+                            service.filterByCategoryId(category);
                             break;
-                        } catch (IllegalArgumentException e) {
+                        } catch(Exception e){
                             System.out.println("Ошибка, попробуйте ещё раз.");
                         }
                     }
+
                 } else if (choiceInput.trim().equalsIgnoreCase("имя")) {
                     while (true) {
                         try {
                             System.out.println("Введите имя категории:");
                             String categoryInput = scanner.nextLine();
-                            service.filterByCategoryName(categoryInput);
+                            Category category = categoryService.findByName(categoryInput);
+                            service.filterByCategoryName(category);
                             break;
                         } catch (IllegalArgumentException e) {
                             System.out.println("Ошибка, попробуйте ещё раз.");

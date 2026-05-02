@@ -9,7 +9,7 @@ public class FinanceAppApplication {
     public static void main(String[] args) {
         TransactionRepository repository = new TransactionRepository();
         CategoryRepository categoryRepository = new CategoryRepository();
-        TransactionService service = new TransactionService(repository, categoryRepository);
+        TransactionService service = new TransactionService(repository);
         CategoryService categoryService = new CategoryService(categoryRepository);
         InputHandler handler = new InputHandler(service, categoryService);
         AppController controller = new AppController(handler);

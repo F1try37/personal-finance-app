@@ -27,4 +27,8 @@ public class CategoryService {
     public Category findByName(String name) {
         return repository.findByName(name);
     }
+
+    public Category findById(int id) {
+        return repository.findById(id);
+    }
 }

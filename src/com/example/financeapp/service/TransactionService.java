@@ -3,7 +3,6 @@ package com.example.financeapp.service;
 import com.example.financeapp.entity.Category;
 import com.example.financeapp.entity.TransactionType;
 import com.example.financeapp.entity.Transaction;
-import com.example.financeapp.repository.CategoryRepository;
 import com.example.financeapp.repository.TransactionRepository;
 
 import java.math.BigDecimal;
@@ -13,11 +12,9 @@ import java.util.List;
 
 public class TransactionService {
     private final TransactionRepository repository;
-    private final CategoryRepository categoryRepository;
 
-    public TransactionService(TransactionRepository repository, CategoryRepository categoryRepository) {
+    public TransactionService(TransactionRepository repository) {
         this.repository = repository;
-        this.categoryRepository = categoryRepository;
     }
 
     public BigDecimal getBalance() {
@@ -75,10 +72,10 @@ public class TransactionService {
         if (k == 0) System.out.println("Ничего не найдено.");
     }
 
-    public void filterByCategoryName(String input) {
+    public void filterByCategoryName(Category category) {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
-            if (transaction.getCategory().equals(categoryRepository.findByName(input))) {
+            if (transaction.getCategory().equals(category)) {
                 System.out.println(transaction);
                 k++;
             }
@@ -86,10 +83,10 @@ public class TransactionService {
         if (k == 0) System.out.println("Ничего не найдено.");
     }
 
-    public void filterByCategoryId(String input) {
+    public void filterByCategoryId(Category category) {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
-            if (transaction.getCategory().equals(categoryRepository.findById(input))) {
+            if (transaction.getCategory().equals(category)) {
                 System.out.println(transaction);
                 k++;
             }

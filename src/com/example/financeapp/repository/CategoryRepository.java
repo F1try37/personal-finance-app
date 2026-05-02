@@ -10,7 +10,7 @@ public class CategoryRepository {
     private int nextId = 0;
 
     public CategoryRepository() {
-        categories.add(new Category(nextId, "Транспорт"));
+        categories.add(new Category(nextId++, "Транспорт"));
         categories.add(new Category(nextId++, "Супермаркеты"));
         categories.add(new Category(nextId++, "Такси"));
     }
@@ -33,16 +33,10 @@ public class CategoryRepository {
         return null;
     }
 
-    public Category findById(String name) {
+    public Category findById(int id) {
         for (Category c: categories) {
-            while (true) {
-                try {
-                    if (Integer.parseInt(name) == c.getId()) {
-                        return c;
-                    }
-                } catch (Exception e) {
-                    System.out.println("Ошибка, попробуйте ещё раз.");
-                }
+            if (id == c.getId()) {
+                return c;
             }
         }
         return null;

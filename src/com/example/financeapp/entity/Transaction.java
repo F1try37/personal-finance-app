@@ -44,6 +44,7 @@ public class Transaction {
         return dateTime;
     }
 
+    @Override
     public String toString() {
         return "id: " + id + ", сумма: " + amount + ", тип: " + transactionType + ", категория: " + category + ", описание: " + description + ", дата: " + dateTime;
     }
