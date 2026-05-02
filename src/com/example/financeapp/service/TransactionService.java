@@ -14,6 +14,16 @@ public class TransactionService {
     private final TransactionRepository repository;
     private BigDecimal balance = BigDecimal.valueOf(0);
 
+    public void balanceCount() {
+        for (Transaction t: repository.getTransactions()) {
+            if (t.getTransactionType().equals(TransactionType.INCOME)) {
+                balance = balance.add(t.getAmount());
+            } else {
+                balance = balance.subtract(t.getAmount());
+            }
+        }
+    }
+
     public TransactionService(TransactionRepository repository) {
         this.repository = repository;
     }
@@ -49,7 +59,7 @@ public class TransactionService {
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getTransactionType().equals(TransactionType.INCOME)) {
                 k++;
-                System.out.println(transaction.toString());
+                System.out.println(transaction.getString());
             }
         }
         if (k == 0) {
@@ -61,7 +71,7 @@ public class TransactionService {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getTransactionType().equals(TransactionType.EXPENSE)) {
-                System.out.println(transaction.toString());
+                System.out.println(transaction.getString());
                 k++;
             }
         }
@@ -70,16 +80,57 @@ public class TransactionService {
         }
     }
 
-    public void filterByCategory(Category category) {
+    public void filterByType(String input) {
+        int k = 0;
+        if (input.trim().equalsIgnoreCase("категория")) {
+            for (Transaction transaction: repository.getTransactions()) {
+                if (transaction.getCategory().equals(Category.valueOf(input.toUpperCase()))) {
+                    System.out.println(transaction.getString());
+                    k++;
+                }
+            }
+            if (k == 0) System.out.println("Ничего не найдено.");
+
+        } else if (input.trim().equalsIgnoreCase("id")) {
+            for (Transaction transaction: repository.getTransactions()) {
+                if (transaction.getId() == Integer.parseInt(input)) {
+                    System.out.println(transaction.getString());
+                    k++;
+                }
+            }
+            if (k == 0) System.out.println("Ничего не найдено.");
+            
+        } else if (input.trim().equalsIgnoreCase("описание")) {
+            for (Transaction transaction: repository.getTransactions()) {
+                if (transaction.getDescription().contains(input.toLowerCase())) {
+                    System.out.println(transaction.getString());
+                    k++;
+                }
+            }
+            if (k == 0) System.out.println("Ничего не найдено.");
+
+        }
+    }
+
+    public void filterByDateTime (LocalDateTime from, LocalDateTime to) {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
-            if (transaction.getCategory().equals(category)) {
-                System.out.println(transaction.toString());
+            if (transaction.getDateTime().isAfter(from) && transaction.getDateTime().isBefore(to)) {
+                System.out.println(transaction.getString());
                 k++;
             }
         }
-        if (k == 0) {
-            System.out.println("Ничего не найдено.");
+        if (k==0) System.out.println("Ничего не найдено.");
+    }
+
+    public void filterByAmount(BigDecimal fromSum, BigDecimal toSum) {
+        int k = 0;
+        for (Transaction transaction: repository.getTransactions()) {
+            if (transaction.getAmount().compareTo(fromSum) >= 0 && transaction.getAmount().compareTo(toSum) <= 0) {
+                System.out.println(transaction.getString());
+                k++;
+            }
         }
+        if (k == 0) System.out.println("Ничего не найдено.");
     }
 }
