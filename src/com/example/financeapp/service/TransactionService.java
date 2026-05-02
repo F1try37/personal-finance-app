@@ -12,15 +12,13 @@ import java.util.List;
 
 public class TransactionService {
     private final TransactionRepository repository;
-    private BigDecimal balance = BigDecimal.valueOf(0);
+    private BigDecimal balance = BigDecimal.ZERO;
 
     public void balanceCount() {
-        for (Transaction t: repository.getTransactions()) {
-            if (t.getTransactionType().equals(TransactionType.INCOME)) {
-                balance = balance.add(t.getAmount());
-            } else {
-                balance = balance.subtract(t.getAmount());
-            }
+        if (repository.getTransactions().getLast().getTransactionType().equals(TransactionType.INCOME)) {
+            balance = balance.add(repository.getTransactions().getLast().getAmount());
+        } else if (repository.getTransactions().getLast().getTransactionType().equals(TransactionType.EXPENSE)) {
+            balance = balance.subtract(repository.getTransactions().getLast().getAmount());
         }
     }
 
@@ -62,9 +60,7 @@ public class TransactionService {
                 System.out.println(transaction.getString());
             }
         }
-        if (k == 0) {
-            System.out.println("Ничего не найдено.");
-        }
+        if (k == 0) System.out.println("Ничего не найдено.");
     }
 
     public void filterByTypeExpense () {
@@ -75,41 +71,40 @@ public class TransactionService {
                 k++;
             }
         }
-        if (k == 0) {
-            System.out.println("Ничего не найдено.");
-        }
+        if (k == 0) System.out.println("Ничего не найдено.");
     }
 
-    public void filterByType(String input) {
+    public void filterById (String input) {
         int k = 0;
-        if (input.trim().equalsIgnoreCase("категория")) {
-            for (Transaction transaction: repository.getTransactions()) {
-                if (transaction.getCategory().equals(Category.valueOf(input.toUpperCase()))) {
-                    System.out.println(transaction.getString());
-                    k++;
-                }
+        for (Transaction transaction: repository.getTransactions()) {
+            if (transaction.getId() == Integer.parseInt(input)) {
+                System.out.println(transaction.getString());
+                k++;
             }
-            if (k == 0) System.out.println("Ничего не найдено.");
-
-        } else if (input.trim().equalsIgnoreCase("id")) {
-            for (Transaction transaction: repository.getTransactions()) {
-                if (transaction.getId() == Integer.parseInt(input)) {
-                    System.out.println(transaction.getString());
-                    k++;
-                }
-            }
-            if (k == 0) System.out.println("Ничего не найдено.");
-            
-        } else if (input.trim().equalsIgnoreCase("описание")) {
-            for (Transaction transaction: repository.getTransactions()) {
-                if (transaction.getDescription().contains(input.toLowerCase())) {
-                    System.out.println(transaction.getString());
-                    k++;
-                }
-            }
-            if (k == 0) System.out.println("Ничего не найдено.");
-
         }
+        if (k == 0) System.out.println("Ничего не найдено.");
+    }
+
+    public void filterByCategory(String input) {
+        int k = 0;
+        for (Transaction transaction: repository.getTransactions()) {
+            if (transaction.getCategory().equals(Category.valueOf(input.toUpperCase()))) {
+                System.out.println(transaction.getString());
+                k++;
+            }
+        }
+        if (k == 0) System.out.println("Ничего не найдено.");
+    }
+
+    public void filterByDescription(String input) {
+        int k = 0;
+        for (Transaction transaction: repository.getTransactions()) {
+            if (transaction.getDescription().contains(input)) {
+                System.out.println(transaction.getString());
+                k++;
+            }
+        }
+        if (k == 0) System.out.println("Ничего не найдено.");
     }
 
     public void filterByDateTime (LocalDateTime from, LocalDateTime to) {
@@ -120,7 +115,7 @@ public class TransactionService {
                 k++;
             }
         }
-        if (k==0) System.out.println("Ничего не найдено.");
+        if (k == 0) System.out.println("Ничего не найдено.");
     }
 
     public void filterByAmount(BigDecimal fromSum, BigDecimal toSum) {

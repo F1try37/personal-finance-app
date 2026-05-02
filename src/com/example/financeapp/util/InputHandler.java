@@ -1,6 +1,7 @@
 package com.example.financeapp.util;
 
 import com.example.financeapp.entity.Category;
+import com.example.financeapp.entity.Transaction;
 import com.example.financeapp.entity.TransactionType;
 import com.example.financeapp.service.TransactionService;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class InputHandler {
-    Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     private final TransactionService service;
 
     public InputHandler(TransactionService service) {
@@ -71,7 +72,9 @@ public class InputHandler {
         if (service.getTransactions().isEmpty()) {
             System.out.println("У вас ещё не было транзакций.");
         } else {
-            System.out.println(service.getTransactions());
+            for (Transaction t: service.getTransactions()) {
+                System.out.println(t.getString());
+            }
         }
     }
 
@@ -108,7 +111,7 @@ public class InputHandler {
                         LocalDateTime dateTo = LocalDateTime.parse(scanner.nextLine());
                         service.filterByDateTime(dateFrom, dateTo);
                         break;
-                    } catch (IllegalArgumentException e) {
+                    } catch (Exception e) {
                         System.out.println("Ошибка, попробуйте ещё раз.");
                     }
                 }
@@ -118,9 +121,9 @@ public class InputHandler {
                 while (true) {
                     try {
                         System.out.println("Введите нижнюю границу суммы:");
-                        BigDecimal amountFrom = new BigDecimal(BigInteger.valueOf(Long.parseLong(scanner.nextLine())));
+                        BigDecimal amountFrom = new BigDecimal(scanner.nextLine());
                         System.out.println("Введите верхнюю границу суммы:");
-                        BigDecimal amountTo = new BigDecimal(BigInteger.valueOf(Long.parseLong(scanner.nextLine())));
+                        BigDecimal amountTo = new BigDecimal(scanner.nextLine());
                         service.filterByAmount(amountFrom, amountTo);
                         break;
                     } catch (IllegalArgumentException e) {
@@ -129,8 +132,43 @@ public class InputHandler {
                 }
                 break;
 
-            } else if (filterInput.trim().equalsIgnoreCase("категория") || filterInput.trim().equalsIgnoreCase("id") || filterInput.trim().equalsIgnoreCase("описание")) {
-                service.filterByType(filterInput);
+            } else if (filterInput.trim().equalsIgnoreCase("id")) {
+                while (true) {
+                    try {
+                        System.out.println("Введите id:");
+                        String idInput = scanner.nextLine();
+                        service.filterById(idInput);
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Ошибка, попробуйте ещё раз.");
+                    }
+                }
+                break;
+
+            } else if (filterInput.trim().equalsIgnoreCase("категория")) {
+                while (true) {
+                    try {
+                        System.out.println("Введите категорию:");
+                        String categoryInput = scanner.nextLine();
+                        service.filterByCategory(categoryInput);
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Ошибка, попробуйте ещё раз.");
+                    }
+                }
+                break;
+
+            } else if (filterInput.trim().equalsIgnoreCase("описание")) {
+                while (true) {
+                    try {
+                        System.out.println("Введите описание:");
+                        String descriptionInput = scanner.nextLine();
+                        service.filterByDescription(descriptionInput);
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Ошибка, попробуйте ещё раз.");
+                    }
+                }
                 break;
 
             } else {
