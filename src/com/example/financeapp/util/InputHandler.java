@@ -6,7 +6,6 @@ import com.example.financeapp.entity.TransactionType;
 import com.example.financeapp.service.TransactionService;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
