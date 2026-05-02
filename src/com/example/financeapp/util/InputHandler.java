@@ -17,6 +17,18 @@ public class InputHandler {
         this.service = service;
     }
 
+    public int showMenu () {
+        System.out.println("Меню:");
+        System.out.println("1. Добавить транзакцию");
+        System.out.println("2. Показать все транзакции");
+        System.out.println("3. Фильтр");
+        System.out.println("4. Показать баланс");
+        System.out.println("5. Изменить баланс");
+        System.out.println("0. Выход");
+
+        return Integer.parseInt(scanner.nextLine());
+    }
+
     public void handleAddTransaction() {
         BigDecimal amount = null;
         while (amount == null) {
