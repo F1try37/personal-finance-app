@@ -12,26 +12,13 @@ import java.util.List;
 
 public class TransactionService {
     private final TransactionRepository repository;
-    private BigDecimal balance = BigDecimal.ZERO;
-
-    public void balanceCount() {
-        if (repository.getTransactions().getLast().getTransactionType().equals(TransactionType.INCOME)) {
-            balance = balance.add(repository.getTransactions().getLast().getAmount());
-        } else if (repository.getTransactions().getLast().getTransactionType().equals(TransactionType.EXPENSE)) {
-            balance = balance.subtract(repository.getTransactions().getLast().getAmount());
-        }
-    }
 
     public TransactionService(TransactionRepository repository) {
         this.repository = repository;
     }
 
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
     public BigDecimal getBalance() {
-        return balance;
+        return repository.getTransactions().stream().map(t -> t.getTransactionType().equals(TransactionType.INCOME) ? t.getAmount() : t.getAmount().negate()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public void addTransaction(BigDecimal amount, TransactionType transactionType, Category category, String description) {
@@ -57,7 +44,7 @@ public class TransactionService {
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getTransactionType().equals(TransactionType.INCOME)) {
                 k++;
-                System.out.println(transaction.getString());
+                System.out.println(transaction);
             }
         }
         if (k == 0) System.out.println("Ничего не найдено.");
@@ -67,7 +54,7 @@ public class TransactionService {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getTransactionType().equals(TransactionType.EXPENSE)) {
-                System.out.println(transaction.getString());
+                System.out.println(transaction);
                 k++;
             }
         }
@@ -78,7 +65,7 @@ public class TransactionService {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getId() == Integer.parseInt(input)) {
-                System.out.println(transaction.getString());
+                System.out.println(transaction);
                 k++;
             }
         }
@@ -89,7 +76,7 @@ public class TransactionService {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getCategory().equals(Category.valueOf(input.toUpperCase()))) {
-                System.out.println(transaction.getString());
+                System.out.println(transaction);
                 k++;
             }
         }
@@ -100,7 +87,7 @@ public class TransactionService {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getDescription().contains(input)) {
-                System.out.println(transaction.getString());
+                System.out.println(transaction);
                 k++;
             }
         }
@@ -111,7 +98,7 @@ public class TransactionService {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getDateTime().isAfter(from) && transaction.getDateTime().isBefore(to)) {
-                System.out.println(transaction.getString());
+                System.out.println(transaction);
                 k++;
             }
         }
@@ -122,7 +109,7 @@ public class TransactionService {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getAmount().compareTo(fromSum) >= 0 && transaction.getAmount().compareTo(toSum) <= 0) {
-                System.out.println(transaction.getString());
+                System.out.println(transaction);
                 k++;
             }
         }

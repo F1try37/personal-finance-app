@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Transaction {
-    private int id;
-    private BigDecimal amount;
-    private TransactionType transactionType;
-    private Category category;
-    private String description;
-    private LocalDateTime dateTime;
+    private final int id;
+    private final BigDecimal amount;
+    private final TransactionType transactionType;
+    private final Category category;
+    private final String description;
+    private final LocalDateTime dateTime;
 
     public Transaction(BigDecimal amount, int id, TransactionType transactionType, Category category, String description, LocalDateTime dateTime) {
         this.amount = amount;
@@ -17,30 +17,6 @@ public class Transaction {
         this.transactionType = transactionType;
         this.category = category;
         this.description = description;
-        this.dateTime = dateTime;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public void setTransactionType(TransactionType transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -68,7 +44,7 @@ public class Transaction {
         return dateTime;
     }
 
-    public String getString() {
+    public String toString() {
         return "id: " + id + ", сумма: " + amount + ", тип: " + transactionType + ", категория: " + category + ", описание: " + description + ", дата: " + dateTime;
     }
 }

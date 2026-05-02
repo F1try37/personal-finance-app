@@ -28,10 +28,6 @@ public class AppController {
                     handler.handleShowBalance();
                     break;
 
-                case 5:
-                    handler.changeBalance();
-                    break;
-
                 case 0:
                     return;
             }

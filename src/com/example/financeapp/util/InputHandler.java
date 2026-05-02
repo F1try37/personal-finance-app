@@ -23,7 +23,6 @@ public class InputHandler {
         System.out.println("2. Показать все транзакции");
         System.out.println("3. Фильтр");
         System.out.println("4. Показать баланс");
-        System.out.println("5. Изменить баланс");
         System.out.println("0. Выход");
 
         return Integer.parseInt(scanner.nextLine());
@@ -76,7 +75,6 @@ public class InputHandler {
         String description = scanner.nextLine();
 
         service.addTransaction(amount, transactionType, category, description);
-        service.balanceCount();
     }
 
     public void handleShowTransactions() {
@@ -84,7 +82,7 @@ public class InputHandler {
             System.out.println("У вас ещё не было транзакций.");
         } else {
             for (Transaction t: service.getTransactions()) {
-                System.out.println(t.getString());
+                System.out.println(t);
             }
         }
     }
@@ -189,24 +187,6 @@ public class InputHandler {
     }
 
     public void handleShowBalance() {
-        System.out.println("Ваш баланс: " + service.getBalance());
-    }
-
-    public void changeBalance() {
-        BigDecimal balance = null;
-
-        while (balance == null) {
-            System.out.println("Введите сумму баланса:");
-            String balanceInput = scanner.nextLine().trim();
-
-            try {
-                balance = new BigDecimal(balanceInput);
-            } catch (NumberFormatException e) {
-                System.out.println("Неверный формат числа, попробуйте ещё раз.");
-            }
-        }
-
-        service.setBalance(balance);
         System.out.println("Ваш баланс: " + service.getBalance());
     }
 }
