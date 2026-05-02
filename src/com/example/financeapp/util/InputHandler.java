@@ -3,6 +3,7 @@ package com.example.financeapp.util;
 import com.example.financeapp.entity.Category;
 import com.example.financeapp.entity.Transaction;
 import com.example.financeapp.entity.TransactionType;
+import com.example.financeapp.service.CategoryService;
 import com.example.financeapp.service.TransactionService;
 
 import java.math.BigDecimal;
@@ -12,9 +13,11 @@ import java.util.Scanner;
 public class InputHandler {
     private final Scanner scanner = new Scanner(System.in);
     private final TransactionService service;
+    private final CategoryService categoryService;
 
-    public InputHandler(TransactionService service) {
+    public InputHandler(TransactionService service, CategoryService categoryService) {
         this.service = service;
+        this.categoryService = categoryService;
     }
 
     public int showMenu () {
@@ -23,6 +26,7 @@ public class InputHandler {
         System.out.println("2. Показать все транзакции");
         System.out.println("3. Фильтр");
         System.out.println("4. Показать баланс");
+        System.out.println("5. Добавить свою категорию");
         System.out.println("0. Выход");
 
         return Integer.parseInt(scanner.nextLine());
@@ -58,14 +62,14 @@ public class InputHandler {
 
         System.out.println("Введите категорию транзакции:");
         System.out.println("Список доступных категорий:");
-        for (Category c: Category.values()) {
-            System.out.println("- " + c.name());
+        for (Category c: categoryService.getCategories()) {
+            System.out.println("- " + c);
         }
         Category category = null;
         while (category == null) {
             String categoryInput = scanner.nextLine();
             try {
-                category = Category.valueOf(categoryInput.toUpperCase());
+                category = categoryService.findByName(categoryInput);
             } catch (IllegalArgumentException e) {
                 System.out.println("Неверная категория, попробуйте ещё раз.");
             }
@@ -155,14 +159,29 @@ public class InputHandler {
                 break;
 
             } else if (filterInput.trim().equalsIgnoreCase("категория")) {
-                while (true) {
-                    try {
-                        System.out.println("Введите категорию:");
-                        String categoryInput = scanner.nextLine();
-                        service.filterByCategory(categoryInput);
-                        break;
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Ошибка, попробуйте ещё раз.");
+                System.out.println("Искать по: (id, имя)");
+                String choiceInput = scanner.nextLine();
+                if (choiceInput.trim().equalsIgnoreCase("id")) {
+                    while (true) {
+                        try {
+                            System.out.println("Введите id категории:");
+                            String categoryInput = scanner.nextLine();
+                            service.filterByCategoryId(categoryInput);
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Ошибка, попробуйте ещё раз.");
+                        }
+                    }
+                } else if (choiceInput.trim().equalsIgnoreCase("имя")) {
+                    while (true) {
+                        try {
+                            System.out.println("Введите имя категории:");
+                            String categoryInput = scanner.nextLine();
+                            service.filterByCategoryName(categoryInput);
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Ошибка, попробуйте ещё раз.");
+                        }
                     }
                 }
                 break;
@@ -188,5 +207,11 @@ public class InputHandler {
 
     public void handleShowBalance() {
         System.out.println("Ваш баланс: " + service.getBalance());
+    }
+
+    public void handleAddCategory() {
+        System.out.println("Введите имя категории:");
+        String categoryName = scanner.nextLine();
+        categoryService.addCategory(categoryName);
     }
 }

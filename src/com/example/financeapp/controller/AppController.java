@@ -28,6 +28,10 @@ public class AppController {
                     handler.handleShowBalance();
                     break;
 
+                case 5:
+                    handler.handleAddCategory();
+                    break;
+
                 case 0:
                     return;
             }
