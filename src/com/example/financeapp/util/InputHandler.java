@@ -21,15 +21,21 @@ public class InputHandler {
     }
 
     public int showMenu () {
-        System.out.println("Меню:");
-        System.out.println("1. Добавить транзакцию");
-        System.out.println("2. Показать все транзакции");
-        System.out.println("3. Фильтр");
-        System.out.println("4. Показать баланс");
-        System.out.println("5. Добавить свою категорию");
-        System.out.println("0. Выход");
+        while (true) {
+            try {
+                System.out.println("Меню:");
+                System.out.println("1. Добавить транзакцию");
+                System.out.println("2. Показать все транзакции");
+                System.out.println("3. Фильтр");
+                System.out.println("4. Показать баланс");
+                System.out.println("5. Добавить свою категорию");
+                System.out.println("0. Выход");
 
-        return Integer.parseInt(scanner.nextLine());
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Пожалуйста, введите число");
+            }
+        }
     }
 
     public void handleAddTransaction() {
@@ -39,13 +45,12 @@ public class InputHandler {
                 System.out.println("Введите сумму:");
                 String amountInput = scanner.nextLine();
                 amount = new BigDecimal(amountInput);
-            } catch (IllegalArgumentException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Ошибка ввода, попробуйте ещё раз.");
             }
         }
 
         TransactionType transactionType = null;
-
         while (transactionType == null) {
             try {
                 System.out.println("Введите тип транзакции(доход, расход)");
@@ -103,10 +108,10 @@ public class InputHandler {
                     String typeInput = scanner.nextLine().trim();
 
                     if (typeInput.equalsIgnoreCase("доход")) {
-                        service.filterByTypeIncome();
+                        service.filterByType(TransactionType.INCOME);
                         break;
                     } else if (typeInput.equalsIgnoreCase("расход")) {
-                        service.filterByTypeExpense();
+                        service.filterByType(TransactionType.EXPENSE);
                         break;
                     } else {
                         System.out.println("Ошибка, попробуйте ещё раз.");
@@ -124,7 +129,7 @@ public class InputHandler {
                         LocalDateTime dateTo = LocalDateTime.parse(scanner.nextLine());
                         service.filterByDateTime(dateFrom, dateTo);
                         break;
-                    } catch (Exception e) {
+                    } catch (NumberFormatException e) {
                         System.out.println("Ошибка, попробуйте ещё раз.");
                     }
                 }
@@ -139,7 +144,7 @@ public class InputHandler {
                         BigDecimal amountTo = new BigDecimal(scanner.nextLine());
                         service.filterByAmount(amountFrom, amountTo);
                         break;
-                    } catch (IllegalArgumentException e) {
+                    } catch (NumberFormatException e) {
                         System.out.println("Ошибка, попробуйте ещё раз.");
                     }
                 }
@@ -150,9 +155,9 @@ public class InputHandler {
                     try {
                         System.out.println("Введите id:");
                         String idInput = scanner.nextLine();
-                        service.filterById(idInput);
+                        service.filterById(Integer.parseInt(idInput));
                         break;
-                    } catch (IllegalArgumentException e) {
+                    } catch (NumberFormatException e) {
                         System.out.println("Ошибка, попробуйте ещё раз.");
                     }
                 }
@@ -167,39 +172,36 @@ public class InputHandler {
                             System.out.println("Введите id категории:");
                             int categoryInput = Integer.parseInt(scanner.nextLine().trim());
                             Category category = categoryService.findById(categoryInput);
-                            service.filterByCategoryId(category);
-                            break;
-                        } catch(Exception e){
+                            if (category == null) {
+                                System.out.println("Категория не найдена");
+                            } else {
+                                service.filterByCategory(category);
+                                break;
+                            }
+                        } catch(NumberFormatException e){
                             System.out.println("Ошибка, попробуйте ещё раз.");
                         }
                     }
 
                 } else if (choiceInput.trim().equalsIgnoreCase("имя")) {
                     while (true) {
-                        try {
-                            System.out.println("Введите имя категории:");
-                            String categoryInput = scanner.nextLine();
-                            Category category = categoryService.findByName(categoryInput);
-                            service.filterByCategoryName(category);
+                        System.out.println("Введите имя категории:");
+                        String categoryInput = scanner.nextLine();
+                        Category category = categoryService.findByName(categoryInput);
+                        if (category == null) {
+                            System.out.println("Категория не найдена");
+                        } else {
+                            service.filterByCategory(category);
                             break;
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Ошибка, попробуйте ещё раз.");
                         }
                     }
                 }
                 break;
 
             } else if (filterInput.trim().equalsIgnoreCase("описание")) {
-                while (true) {
-                    try {
-                        System.out.println("Введите описание:");
-                        String descriptionInput = scanner.nextLine();
-                        service.filterByDescription(descriptionInput);
-                        break;
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Ошибка, попробуйте ещё раз.");
-                    }
-                }
+                System.out.println("Введите описание:");
+                String descriptionInput = scanner.nextLine();
+                service.filterByDescription(descriptionInput);
                 break;
 
             } else {

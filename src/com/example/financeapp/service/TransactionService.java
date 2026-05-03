@@ -39,10 +39,10 @@ public class TransactionService {
         return new ArrayList<>(repository.getTransactions());
     }
 
-    public void filterByTypeIncome () {
+    public void filterByType (TransactionType type) {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
-            if (transaction.getTransactionType().equals(TransactionType.INCOME)) {
+            if (transaction.getTransactionType() == type) {
                 k++;
                 System.out.println(transaction);
             }
@@ -50,10 +50,10 @@ public class TransactionService {
         if (k == 0) System.out.println("Ничего не найдено.");
     }
 
-    public void filterByTypeExpense () {
+    public void filterById (int input) {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
-            if (transaction.getTransactionType().equals(TransactionType.EXPENSE)) {
+            if (transaction.getId() == input) {
                 System.out.println(transaction);
                 k++;
             }
@@ -61,29 +61,7 @@ public class TransactionService {
         if (k == 0) System.out.println("Ничего не найдено.");
     }
 
-    public void filterById (String input) {
-        int k = 0;
-        for (Transaction transaction: repository.getTransactions()) {
-            if (transaction.getId() == Integer.parseInt(input)) {
-                System.out.println(transaction);
-                k++;
-            }
-        }
-        if (k == 0) System.out.println("Ничего не найдено.");
-    }
-
-    public void filterByCategoryName(Category category) {
-        int k = 0;
-        for (Transaction transaction: repository.getTransactions()) {
-            if (transaction.getCategory().equals(category)) {
-                System.out.println(transaction);
-                k++;
-            }
-        }
-        if (k == 0) System.out.println("Ничего не найдено.");
-    }
-
-    public void filterByCategoryId(Category category) {
+    public void filterByCategory(Category category) {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
             if (transaction.getCategory().equals(category)) {
@@ -97,7 +75,7 @@ public class TransactionService {
     public void filterByDescription(String input) {
         int k = 0;
         for (Transaction transaction: repository.getTransactions()) {
-            if (transaction.getDescription().contains(input)) {
+            if (transaction.getDescription().toLowerCase().contains(input.toLowerCase())) {
                 System.out.println(transaction);
                 k++;
             }
